@@ -3,7 +3,6 @@ package blkparser
 import (
 	"encoding/binary"
 	"github.com/conformal/btcscript"
-	"fmt"
 )
 
 type Tx struct {
@@ -91,13 +90,12 @@ func NewTxIn(txinraw []byte) (txin *TxIn, offset int) {
 
     scriptsig, scriptsigsize := DecodeVariableLengthInteger(txinraw[offset:])
     offset+= scriptsigsize
-    fmt.Printf("Before scriptsig\n")
+    
     txin.ScriptSig = txinraw[offset:offset+scriptsig]
     offset+= scriptsig
-    fmt.Printf("Before Seq, %v/%v\n", offset, cap(txinraw))
+    
     txin.Sequence = binary.LittleEndian.Uint32(txinraw[offset:offset+4])
     offset+= 4
-    fmt.Printf("TXIN: %+v\n", txin)
     return
 }
 

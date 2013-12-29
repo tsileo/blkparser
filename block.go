@@ -26,7 +26,7 @@ func NewBlock(rawblock []byte) (block *Block, err error) {
 	block.Hash = GetShaString(rawblock[:80])
 	block.Version = binary.LittleEndian.Uint32(rawblock[0:4])
 	if !bytes.Equal(rawblock[4:36], []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}) {
-		block.Parent = GetShaString(rawblock[4:36])
+		block.Parent = HashString(rawblock[4:36])
 	}
 	block.MerkleRoot = hex.EncodeToString(rawblock[36:68])
     block.BlockTime = binary.LittleEndian.Uint32(rawblock[68:72])

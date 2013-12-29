@@ -32,8 +32,13 @@ func GetShaString(data []byte) (res string) {
     sha.Reset()
     sha.Write(tmp)
     hash := sha.Sum(nil)
+    res = HashString(hash)
+    return
+}
+
+func HashString(data []byte) (res string) {
     for i := 0; i<32; i++ {
-        res+= fmt.Sprintf("%02x", hash[31 - i])
+        res+= fmt.Sprintf("%02x", data[31-i])
     }
     return
 }
