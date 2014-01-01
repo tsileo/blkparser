@@ -1,14 +1,14 @@
 package blkparser
 
 import (
-	"crypto/sha256"
-	"fmt"
+    "crypto/sha256"
+    "fmt"
 )
 
 // Get the Tx count, decode the variable length integer
 // https://en.bitcoin.it/wiki/Protocol_specification#Variable_length_integer
 func DecodeVariableLengthInteger(raw []byte) (cnt int, cnt_size int) {
-	if raw[0] < 0xfd {
+    if raw[0] < 0xfd {
         return int(raw[0]), 1
     }
     cnt_size = 1 + (2 << (2-(0xff-raw[0])))

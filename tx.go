@@ -1,8 +1,8 @@
 package blkparser
 
 import (
-	"encoding/binary"
-	"github.com/conformal/btcscript"
+    "encoding/binary"
+    "github.com/conformal/btcscript"
 )
 
 type Tx struct {
@@ -24,25 +24,25 @@ type TxIn struct {
 }
 
 type TxOut struct {
-	Addr string
+    Addr string
     Value uint64
     Pkscript []byte
 }
 
 func ParseTxs(txsraw []byte) (txs []*Tx, err error) {
-	offset := int(0)
+    offset := int(0)
     txcnt, txcnt_size := DecodeVariableLengthInteger(txsraw[offset:])
     offset+= txcnt_size
 
-	txs = make([]*Tx, txcnt)
+    txs = make([]*Tx, txcnt)
 
-	txoffset := int(0)
-	for i := range txs {
-		txs[i], txoffset = NewTx(txsraw[offset:])
-		txs[i].Hash = GetShaString(txsraw[offset:offset+txoffset])
-		txs[i].Size = uint32(txoffset)
-		offset+= txoffset
-	}
+    txoffset := int(0)
+    for i := range txs {
+        txs[i], txoffset = NewTx(txsraw[offset:])
+        txs[i].Hash = GetShaString(txsraw[offset:offset+txoffset])
+        txs[i].Size = uint32(txoffset)
+        offset+= txoffset
+    }
 
     return
 }
@@ -60,8 +60,8 @@ func NewTx(rawtx []byte) (tx *Tx, offset int) {
 
     txoffset := int(0)
     for i := range tx.TxIns {
-    	tx.TxIns[i], txoffset = NewTxIn(rawtx[offset:])
-    	offset+= txoffset
+        tx.TxIns[i], txoffset = NewTxIn(rawtx[offset:])
+        offset+= txoffset
 
     }
 
@@ -72,8 +72,8 @@ func NewTx(rawtx []byte) (tx *Tx, offset int) {
     tx.TxOuts = make([]*TxOut, txoutcnt)
 
     for i := range tx.TxOuts {
-    	tx.TxOuts[i], txoffset = NewTxOut(rawtx[offset:])
-    	offset+= txoffset
+        tx.TxOuts[i], txoffset = NewTxOut(rawtx[offset:])
+        offset+= txoffset
     }
 
     tx.LockTime = binary.LittleEndian.Uint32(rawtx[offset:offset+4])
@@ -100,8 +100,8 @@ func NewTxIn(txinraw []byte) (txin *TxIn, offset int) {
 }
 
 func NewTxOut(txoutraw []byte) (txout *TxOut, offset int) {
-	txout = new(TxOut)
-	txout.Value = binary.LittleEndian.Uint64(txoutraw[0:8])
+    txout = new(TxOut)
+    txout.Value = binary.LittleEndian.Uint64(txoutraw[0:8])
     offset = 8
 
     pkscript, pkscriptsize := DecodeVariableLengthInteger(txoutraw[offset:])
@@ -112,8 +112,8 @@ func NewTxOut(txoutraw []byte) (txout *TxOut, offset int) {
 
     _, addrhash, err := btcscript.ScriptToAddrHash(txout.Pkscript)
     if err != nil {
-    	addrhash = []byte{}
+        addrhash = []byte{}
     }
     txout.Addr = string(addrhash[:])
-	return
+    return
 }
