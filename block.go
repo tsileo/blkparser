@@ -7,16 +7,21 @@ import (
 )
 
 type Block struct {
-    Raw []byte
-    Hash string
-    Version uint32
-    MerkleRoot string
-    BlockTime uint32
-    Bits uint32
-    Nonce uint32
-    Size uint32
-    Parent string
-    Txs []*Tx
+    Raw []byte `json:"-"`
+    Hash string `json:"hash"`
+    Height uint `json:"height"`
+    Txs []*Tx `json:"tx,omitempty"`
+    Version uint32 `json:"ver"`
+    MerkleRoot string `json:"mrkl_root"`
+    BlockTime uint32 `json:"time"`
+    Bits uint32 `json:"bits"`
+    Nonce uint32 `json:"nonce"`
+    Size uint32 `json:"size"`
+    TxCnt uint32 `json:"n_tx"`
+    TotalBTC uint64 `json:"total_out"`
+    BlockReward float64 `json:"-"`
+    Parent string `json:"prev_block"`
+    Next string  `json:"next_block"`
 }
 
 func NewBlock(rawblock []byte) (block *Block, err error) {

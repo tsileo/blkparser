@@ -11,6 +11,7 @@ You must handle block height and orphaned blocks if any yourself, and it doesn't
 You must install it before install ``blkparser``:
 
 	$ go get github.com/conformal/btcscript
+	$ go get github.com/conformal/btcutil
 
 
 ## License

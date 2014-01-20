@@ -3,6 +3,8 @@ package blkparser
 import (
     "encoding/binary"
     "github.com/conformal/btcscript"
+    "github.com/conformal/btcwire"
+    "github.com/conformal/btcutil"
 )
 
 type Tx struct {
@@ -84,7 +86,7 @@ func NewTx(rawtx []byte) (tx *Tx, offset int) {
 
 func NewTxIn(txinraw []byte) (txin *TxIn, offset int) {
     txin = new(TxIn)
-    txin.InputHash = GetShaString(txinraw[0:32])
+    txin.InputHash = HashString(txinraw[0:32])
     txin.InputVout = binary.LittleEndian.Uint32(txinraw[32:36])
     offset = 36
 
@@ -112,8 +114,15 @@ func NewTxOut(txoutraw []byte) (txout *TxOut, offset int) {
 
     _, addrhash, err := btcscript.ScriptToAddrHash(txout.Pkscript)
     if err != nil {
-        addrhash = []byte{}
+        return
     }
-    txout.Addr = string(addrhash[:])
+    txaddr, err := btcutil.EncodeAddress(addrhash, btcwire.MainNet)
+
+    if err != nil {
+        txout.Addr = ""
+    } else {
+        txout.Addr = txaddr
+    }
+
     return
 }

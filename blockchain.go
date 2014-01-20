@@ -93,8 +93,24 @@ func (blockchain *Blockchain) FetchNextBlock() (rawblock []byte, err error) {
         return
     }
 
+    offset, _ := blockchain.CurrentFile.Seek(0, 1)
+    fmt.Printf("POS:%v, %v", offset, blockchain.CurrentId)
+
     return
 
+}
+
+// Convenience method to skip directly to the given blkfile / offset,
+// you must take care of the height
+func (blockchain *Blockchain) SkipTo(blkId uint32, offset int64) (err error) {
+    blockchain.CurrentId = blkId
+    f, err := os.Open(blkfilename(blockchain.Path, blkId))
+    if err != nil {
+        return
+    }
+    blockchain.CurrentFile = f
+    _, err = blockchain.CurrentFile.Seek(offset, 0)
+    return
 }
 
 func blkfilename(path string, id uint32) string {
