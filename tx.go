@@ -4,7 +4,6 @@ import (
     "encoding/binary"
     "github.com/conformal/btcscript"
     "github.com/conformal/btcwire"
-    "github.com/conformal/btcutil"
 )
 
 type Tx struct {
@@ -112,16 +111,14 @@ func NewTxOut(txoutraw []byte) (txout *TxOut, offset int) {
     txout.Pkscript = txoutraw[offset:offset+pkscript]
     offset+= pkscript
 
-    _, addrhash, err := btcscript.ScriptToAddrHash(txout.Pkscript)
+    _, addrhash, _, err := btcscript.ExtractPkScriptAddrs(txout.Pkscript, btcwire.MainNet)
     if err != nil {
         return
     }
-    txaddr, err := btcutil.EncodeAddress(addrhash, btcwire.MainNet)
-
-    if err != nil {
-        txout.Addr = ""
+    if len(addrhash) != 0 {
+        txout.Addr = addrhash[0].EncodeAddress()
     } else {
-        txout.Addr = txaddr
+        txout.Addr = ""
     }
 
     return
