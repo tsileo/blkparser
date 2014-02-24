@@ -4,15 +4,13 @@ Open source Bitcoin block chain parser written in Go.
 
 You must handle block height and orphaned blocks if any yourself, and it doesn't perform any verification, it assumes stored blocks are valid.
 
-## Requirements
+## Documentation
 
-- [btcscript (from conformal)](https://github.com/conformal/btcscript)
+See the [API reference](http://godoc.org/github.com/tsileo/blkparser).
 
-You must install it before install ``blkparser``:
+## Installation
 
-	$ go get github.com/conformal/btcscript
-	$ go get github.com/conformal/btcutil
-
+	$ go get github.com/tsileo/blkparser
 
 ## License
 
