@@ -92,12 +92,7 @@ func (blockchain *Blockchain) FetchNextBlock() (rawblock []byte, err error) {
 	if err != nil {
 		return
 	}
-
-	offset, _ := blockchain.CurrentFile.Seek(0, 1)
-	fmt.Printf("POS:%v, %v", offset, blockchain.CurrentId)
-
 	return
-
 }
 
 // Convenience method to skip directly to the given blkfile / offset,
