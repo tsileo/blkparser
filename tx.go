@@ -2,8 +2,8 @@ package blkparser
 
 import (
 	"encoding/binary"
-	"github.com/conformal/btcscript"
-	"github.com/conformal/btcwire"
+	"github.com/btcsuite/btcd/chaincfg"
+	"github.com/btcsuite/btcd/txscript"
 )
 
 type Tx struct {
@@ -111,7 +111,7 @@ func NewTxOut(txoutraw []byte) (txout *TxOut, offset int) {
 	txout.Pkscript = txoutraw[offset : offset+pkscript]
 	offset += pkscript
 
-	_, addrhash, _, err := btcscript.ExtractPkScriptAddrs(txout.Pkscript, btcwire.MainNet)
+	_, addrhash, _, err := txscript.ExtractPkScriptAddrs(txout.Pkscript, &chaincfg.MainNetParams)
 	if err != nil {
 		return
 	}
