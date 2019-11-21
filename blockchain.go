@@ -40,6 +40,9 @@ func (blockchain *Blockchain) NextBlock() (block *Block, err error) {
 		blockchain.CurrentFile.Close()
 		blockchain.CurrentFile = newblkfile
 		rawblock, err = blockchain.FetchNextBlock()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	block, err = NewBlock(rawblock)
